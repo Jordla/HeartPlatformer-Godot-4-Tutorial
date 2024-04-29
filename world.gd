@@ -8,4 +8,7 @@ extends Node2D
 @onready var polygon_2d = $StaticBody2D/Polygon2D # Control drag shortcut
 
 func _ready(): 
+	RenderingServer.set_default_clear_color(Color.BLACK)
 	polygon_2d.polygon = collision_polygon_2d.polygon # Set the empty list of polygons to be the list of polygon from the collison node
+	
+	
