@@ -5,4 +5,5 @@ extends Resource
 @export var acceleration: float = 800.0
 @export var friction: float = 1000.0
 @export var jump_velocity: float = -300.0
-@export var gravity_scale = 1.0
+@export var gravity_scale: float = 1.0
+@export var air_resistance: float = 200.0

@@ -15,6 +15,7 @@ func _physics_process(delta): # Ran everysingle physics frame (60 ticks per seco
 	var input_axis = Input.get_axis("ui_left", "ui_right") # Returns an int, ui_left --> return -1, ui_right --> return 1, returns 0 if we press neither or both
 	handle_acceleration(input_axis, delta)
 	apply_friction(input_axis, delta)
+	apply_air_resistance(input_axis, delta)
 	update_animation(input_axis)
 	
 	var was_on_floor = is_on_floor() # Check if player was on floor before moving 
@@ -26,6 +27,8 @@ func _physics_process(delta): # Ran everysingle physics frame (60 ticks per seco
 	var just_left_ledge = was_on_floor and not is_on_floor() and velocity.y >= 0 # Before moving: on floor?, After moving: in air/! on_floor, Is player in falling state?
 	if just_left_ledge:
 		coyote_jump_timer.start()
+	if Input.is_action_just_pressed("ui_accept"):
+		movement_data = load("res://FasterMovementData.tres") # Switches from SlowerMovementData resource to the FasterMovementData
 		
 	
 	
@@ -43,8 +46,12 @@ func handle_jump():
 			velocity.y = movement_data.jump_velocity / 2 # Short press on spacebar causes a smaller jump
 			
 func apply_friction(input_axis : float, delta : float):
-	if input_axis == 0:
+	if input_axis == 0 and is_on_floor():
 		velocity.x = move_toward(velocity.x, 0, movement_data.friction * delta)
+
+func apply_air_resistance(input_axis : float, delta : float):
+	if input_axis == 0 and not is_on_floor():
+		velocity.x - move_toward(velocity.x, 0, movement_data.air_resistance * delta)
 	
 func handle_acceleration(input_axis : float, delta : float):
 	if input_axis != 0:
