@@ -1,11 +1,6 @@
 extends CharacterBody2D
 
-
-const SPEED: float = 100.0
-const ACCELERATION: float = 800.0
-const FRICTION: float = 1000.0
-const JUMP_VELOCITY: float = -300.0
-
+@export var movement_data : PlayerMovementData # variable called movement_data of type PlayerMovementData (gd script which inherits resource)
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -37,23 +32,23 @@ func _physics_process(delta): # Ran everysingle physics frame (60 ticks per seco
 func apply_gravity(delta : float):
 	# Add the gravity.
 	if not is_on_floor():
-		velocity.y += gravity * delta # Apply fraction of gravity per tick, delta > 1, then velocity.y is increased to catchup on time gap
+		velocity.y += gravity *  movement_data.gravity_scale * delta # Apply fraction of gravity per tick, delta > 1, then velocity.y is increased to catchup on time gap
 		
 func handle_jump():
 	if is_on_floor() or coyote_jump_timer.time_left > 0.0: # Checks if on floor or coyote jump window is still open, then allow player to jump
 		if Input.is_action_just_pressed("ui_accept"): # Removing is_on_floor() enables endless jumping/flying
-			velocity.y = JUMP_VELOCITY # Jump veloicty applied imm but 
+			velocity.y = movement_data.jump_velocity # Jump veloicty applied imm but 
 	if not is_on_floor(): # In the air 
-		if Input.is_action_just_released("ui_accept") and velocity.y < JUMP_VELOCITY / 2: # Check if not falling and SMALLER than (-200.0), JUMP_VELOCITY - Certain time window to release spacebar for short jump
-			velocity.y = JUMP_VELOCITY / 2 # Short press on spacebar causes a smaller jump
+		if Input.is_action_just_released("ui_accept") and velocity.y < movement_data.jump_velocity / 2: # Check if not falling and SMALLER than (-200.0), JUMP_VELOCITY - Certain time window to release spacebar for short jump
+			velocity.y = movement_data.jump_velocity / 2 # Short press on spacebar causes a smaller jump
 			
 func apply_friction(input_axis : float, delta : float):
 	if input_axis == 0:
-		velocity.x = move_toward(velocity.x, 0, FRICTION * delta)
+		velocity.x = move_toward(velocity.x, 0, movement_data.friction * delta)
 	
 func handle_acceleration(input_axis : float, delta : float):
 	if input_axis != 0:
-		velocity.x = move_toward(velocity.x, SPEED * input_axis, ACCELERATION * delta)
+		velocity.x = move_toward(velocity.x, movement_data.speed * input_axis, movement_data.acceleration * delta)
 		
 func update_animation(input_axis : float):
 	if input_axis != 0:
