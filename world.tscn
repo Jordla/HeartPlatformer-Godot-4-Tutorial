@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://d25kocpsd82yy"]
+[gd_scene load_steps=6 format=3 uid="uid://d25kocpsd82yy"]
 
 [ext_resource type="Script" path="res://world.gd" id="1_e0iph"]
 [ext_resource type="PackedScene" uid="uid://bfignkbu2le1" path="res://player.tscn" id="2_rpgpw"]
 [ext_resource type="PackedScene" uid="uid://c2yr0ca2airn2" path="res://spikes.tscn" id="3_0pnnc"]
+[ext_resource type="PackedScene" uid="uid://bebbe2l5i84ep" path="res://heart.tscn" id="4_mecgx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hfvn0"]
 size = Vector2(16, 48)
@@ -21,7 +22,7 @@ polygon = PackedVector2Array(1, -1, 25, -1, 25, 151, 65, 151, 65, 134.155, 97, 1
 position = Vector2(-1, 1)
 
 [node name="Player" parent="." instance=ExtResource("2_rpgpw")]
-position = Vector2(58, 97)
+position = Vector2(33, 148)
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="."]
 collision_mask = 0
@@ -44,3 +45,24 @@ position = Vector2(112, 152)
 
 [node name="Spikes3" parent="." instance=ExtResource("3_0pnnc")]
 position = Vector2(168, 152)
+
+[node name="Spikes4" parent="." instance=ExtResource("3_0pnnc")]
+position = Vector2(293, 136)
+
+[node name="Heart" parent="." instance=ExtResource("4_mecgx")]
+position = Vector2(68, 125)
+
+[node name="Heart2" parent="." instance=ExtResource("4_mecgx")]
+position = Vector2(153, 88)
+
+[node name="Heart3" parent="." instance=ExtResource("4_mecgx")]
+position = Vector2(256, 92)
+
+[node name="Heart4" parent="." instance=ExtResource("4_mecgx")]
+position = Vector2(306, 63)
+
+[node name="Heart5" parent="." instance=ExtResource("4_mecgx")]
+position = Vector2(270, 23)
+
+[node name="Heart6" parent="." instance=ExtResource("4_mecgx")]
+position = Vector2(278, 131)
