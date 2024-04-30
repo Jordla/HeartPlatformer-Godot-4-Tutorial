@@ -6,7 +6,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_3jxl0"]
 radius = 5.0
 
-[node name="Heart" type="Area2D"]
+[node name="Heart" type="Area2D" groups=["Hearts"]]
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("1_45yh1")
