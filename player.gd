@@ -12,8 +12,8 @@ var just_wall_jumped: bool = false
 
 func _physics_process(delta): # Ran everysingle physics frame (60 ticks per second, therefore called 60 times a second) - Delta: Time between each frame 
 	apply_gravity(delta) # Try commenting out gravity function to see what happens
-	handle_jump()
 	handle_wall_jump()
+	handle_jump()
 	var input_axis = Input.get_axis("ui_left", "ui_right") # Returns an int, ui_left --> return -1, ui_right --> return 1, returns 0 if we press neither or both
 	handle_acceleration(input_axis, delta)
 	apply_friction(input_axis, delta)
@@ -28,6 +28,7 @@ func _physics_process(delta): # Ran everysingle physics frame (60 ticks per seco
 		coyote_jump_timer.start()
 	if Input.is_action_just_pressed("ui_accept"):
 		movement_data = load("res://FasterMovementData.tres") # Switches from SlowerMovementData resource to the FasterMovementData
+	just_wall_jumped = false
 
 
 func apply_gravity(delta : float):
@@ -41,6 +42,7 @@ func handle_wall_jump():
 	if Input.is_action_just_pressed("ui_accept"):
 		velocity.x = wall_normal.x * movement_data.speed # Horizontal velocity is need to "push" off the wall in the opposite direction
 		velocity.y = movement_data.jump_velocity # A jump
+		just_wall_jumped = true
 
 
 func handle_jump():
@@ -53,7 +55,7 @@ func handle_jump():
 		if Input.is_action_just_released("ui_accept") and velocity.y < movement_data.jump_velocity / 2: # Check if not falling and SMALLER than (-200.0), JUMP_VELOCITY - Certain time window to release spacebar for short jump
 			velocity.y = movement_data.jump_velocity / 2 # Short press on spacebar causes a smaller jump
 		
-		if Input.is_action_just_pressed("ui_accept") and air_jump == true: # In the air and has an air_jump available
+		if Input.is_action_just_pressed("ui_accept") and air_jump == true and not just_wall_jumped: # In the air and has an air_jump available and hasn't wall jumped recently 
 			velocity.y = movement_data.jump_velocity * 0.8 # Make the air jump less powerful than the regular jump
 			air_jump = false
 
