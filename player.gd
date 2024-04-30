@@ -37,7 +37,7 @@ func apply_gravity(delta : float):
 		velocity.y += gravity *  movement_data.gravity_scale * delta # Apply fraction of gravity per tick, delta > 1, then velocity.y is increased to catchup on time gap
 
 func handle_wall_jump():
-	if not is_on_wall(): return
+	if not is_on_wall_only(): return # New function in Godot 4
 	var wall_normal = get_wall_normal() # Detects if collided with wall and returns a normal (orthogonal vector pointing away from wall) - vector2D
 	if Input.is_action_just_pressed("ui_accept"):
 		velocity.x = wall_normal.x * movement_data.speed # Horizontal velocity is need to "push" off the wall in the opposite direction
