@@ -9,11 +9,13 @@ extends Node2D
 @onready var level_completed = $CanvasLayer/LevelCompleted
 
 func _ready(): 
+	level_completed.hide()
 	RenderingServer.set_default_clear_color(Color.BLACK)
 	polygon_2d.polygon = collision_polygon_2d.polygon # Set the empty list of polygons to be the list of polygon from the collison node
 	Events.level_completed.connect(show_level_completed) # Don't put show_level_completed() as we don't want to call the func only connect it
 	
 func show_level_completed():
 	level_completed.show()
+	get_tree().paused = true # Upon level completion pause the game
 	
 	

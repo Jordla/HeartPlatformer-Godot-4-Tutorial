@@ -71,4 +71,3 @@ position = Vector2(278, 131)
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="LevelCompleted" parent="CanvasLayer" instance=ExtResource("5_v0vvt")]
-visible = false
