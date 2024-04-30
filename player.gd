@@ -9,6 +9,7 @@ var just_wall_jumped: bool = false
 
 @onready var animated_sprite_2d = $AnimatedSprite2D
 @onready var coyote_jump_timer = $CoyoteJumpTimer
+@onready var starting_position = global_position # Attribute of the 2DNode and only available when the node is ready 
 
 func _physics_process(delta): # Ran everysingle physics frame (60 ticks per second, therefore called 60 times a second) - Delta: Time between each frame 
 	apply_gravity(delta) # Try commenting out gravity function to see what happens
@@ -91,4 +92,5 @@ func update_animation(input_axis : float):
 
 
 func _on_hazard_detector_area_entered(area):
-	queue_free() # Destroys/deletes node that script is attached to and all subsequent children 
+	global_position = starting_position # Also enabled position smoothing in the Camera2D node - Makes the game blurry though
+	# queue_free() # Destroys/deletes node that script is attached to and all subsequent children 
