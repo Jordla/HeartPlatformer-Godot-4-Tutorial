@@ -5,6 +5,7 @@ extends CharacterBody2D
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var air_jump: bool = false
+var just_wall_jumped: bool = false
 
 @onready var animated_sprite_2d = $AnimatedSprite2D
 @onready var coyote_jump_timer = $CoyoteJumpTimer
@@ -37,12 +38,10 @@ func apply_gravity(delta : float):
 func handle_wall_jump():
 	if not is_on_wall(): return
 	var wall_normal = get_wall_normal() # Detects if collided with wall and returns a normal (orthogonal vector pointing away from wall) - vector2D
-	if Input.is_action_just_pressed("ui_left") and wall_normal == Vector2.LEFT: # Wall is to the right, Vector2.LEFT is constant == (-1,0)
+	if Input.is_action_just_pressed("ui_accept"):
 		velocity.x = wall_normal.x * movement_data.speed # Horizontal velocity is need to "push" off the wall in the opposite direction
-		velocity.y = movement_data.jump_velocity
-	if Input.is_action_just_pressed("ui_right") and wall_normal == Vector2.RIGHT: # How can I refactor the code to make it more streamlined, lots of reduplicate code
-		velocity.x = wall_normal.x * movement_data.speed
-		velocity.y = movement_data.jump_velocity
+		velocity.y = movement_data.jump_velocity # A jump
+
 
 func handle_jump():
 	if is_on_floor(): air_jump = true
@@ -74,7 +73,7 @@ func handle_air_acceleration(input_axis : float, delta : float): # Air accelerat
 
 func apply_air_resistance(input_axis : float, delta : float):
 	if input_axis == 0 and not is_on_floor(): # Not moving and in the air
-		velocity.x - move_toward(velocity.x, 0, movement_data.air_resistance * delta)
+		velocity.x = move_toward(velocity.x, 0, movement_data.air_resistance * delta)
 	
 
 func update_animation(input_axis : float):
