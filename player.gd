@@ -51,7 +51,7 @@ func handle_jump():
 	if is_on_floor() or coyote_jump_timer.time_left > 0.0: # Checks if on floor or coyote jump window is still open, then allow player to jump
 		if Input.is_action_just_pressed("ui_accept"): # Removing is_on_floor() enables endless jumping/flying
 			velocity.y = movement_data.jump_velocity # Jump veloicty applied imm but 
-	if not is_on_floor(): # In the air 
+	elif not is_on_floor(): # In the air 
 		if Input.is_action_just_released("ui_accept") and velocity.y < movement_data.jump_velocity / 2: # Check if not falling and SMALLER than (-200.0), JUMP_VELOCITY - Certain time window to release spacebar for short jump
 			velocity.y = movement_data.jump_velocity / 2 # Short press on spacebar causes a smaller jump
 		
@@ -88,3 +88,7 @@ func update_animation(input_axis : float):
 	if not is_on_floor(): 
 		animated_sprite_2d.play("jump") # Jump animation can be executed last which overrides the previous animations
 	
+
+
+func _on_hazard_detector_area_entered(area):
+	queue_free() # Destroys/deletes node that script is attached to and all subsequent children 
