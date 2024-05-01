@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://d25kocpsd82yy"]
+[gd_scene load_steps=8 format=3 uid="uid://d25kocpsd82yy"]
 
 [ext_resource type="Script" path="res://world.gd" id="1_e0iph"]
 [ext_resource type="PackedScene" uid="uid://bfignkbu2le1" path="res://player.tscn" id="2_rpgpw"]
 [ext_resource type="PackedScene" uid="uid://c2yr0ca2airn2" path="res://spikes.tscn" id="3_0pnnc"]
 [ext_resource type="PackedScene" uid="uid://bebbe2l5i84ep" path="res://heart.tscn" id="4_mecgx"]
 [ext_resource type="PackedScene" uid="uid://b7jw81hngyskp" path="res://level_completed.tscn" id="5_v0vvt"]
+[ext_resource type="PackedScene" uid="uid://c2tl7lnnfl1c5" path="res://level_tile_map.tscn" id="6_05hbm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hfvn0"]
 size = Vector2(16, 48)
@@ -71,3 +72,6 @@ position = Vector2(278, 131)
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="LevelCompleted" parent="CanvasLayer" instance=ExtResource("5_v0vvt")]
+visible = false
+
+[node name="LevelTileMap" parent="." instance=ExtResource("6_05hbm")]
