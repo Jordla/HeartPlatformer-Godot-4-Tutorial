@@ -15,7 +15,7 @@ func _physics_process(delta): # Ran everysingle physics frame (60 ticks per seco
 	apply_gravity(delta) # Try commenting out gravity function to see what happens
 	handle_wall_jump()
 	handle_jump()
-	var input_axis = Input.get_axis("ui_left", "ui_right") # Returns an int, ui_left --> return -1, ui_right --> return 1, returns 0 if we press neither or both
+	var input_axis = Input.get_axis("move_left", "move_right") # Returns an int, ui_left --> return -1, ui_right --> return 1, returns 0 if we press neither or both
 	handle_acceleration(input_axis, delta)
 	apply_friction(input_axis, delta)
 	handle_air_acceleration(input_axis, delta)
@@ -27,7 +27,7 @@ func _physics_process(delta): # Ran everysingle physics frame (60 ticks per seco
 	var just_left_ledge = was_on_floor and not is_on_floor() and velocity.y >= 0 # Before moving: on floor?, After moving: in air/! on_floor, Is player in falling state?
 	if just_left_ledge:
 		coyote_jump_timer.start()
-	if Input.is_action_just_pressed("ui_accept"):
+	if Input.is_action_just_pressed("jump"):
 		movement_data = load("res://FasterMovementData.tres") # Switches from SlowerMovementData resource to the FasterMovementData
 	just_wall_jumped = false
 
@@ -40,7 +40,7 @@ func apply_gravity(delta : float):
 func handle_wall_jump():
 	if not is_on_wall_only(): return # New function in Godot 4
 	var wall_normal = get_wall_normal() # Detects if collided with wall and returns a normal (orthogonal vector pointing away from wall) - vector2D
-	if Input.is_action_just_pressed("ui_accept"):
+	if Input.is_action_just_pressed("jump"):
 		velocity.x = wall_normal.x * movement_data.speed # Horizontal velocity is need to "push" off the wall in the opposite direction
 		velocity.y = movement_data.jump_velocity # A jump
 		just_wall_jumped = true
@@ -50,13 +50,13 @@ func handle_jump():
 	if is_on_floor(): air_jump = true
 	
 	if is_on_floor() or coyote_jump_timer.time_left > 0.0: # Checks if on floor or coyote jump window is still open, then allow player to jump
-		if Input.is_action_just_pressed("ui_accept"): # Removing is_on_floor() enables endless jumping/flying
+		if Input.is_action_just_pressed("jump"): # Removing is_on_floor() enables endless jumping/flying
 			velocity.y = movement_data.jump_velocity # Jump veloicty applied imm but 
 	elif not is_on_floor(): # In the air 
-		if Input.is_action_just_released("ui_accept") and velocity.y < movement_data.jump_velocity / 2: # Check if not falling and SMALLER than (-200.0), JUMP_VELOCITY - Certain time window to release spacebar for short jump
+		if Input.is_action_just_released("jump") and velocity.y < movement_data.jump_velocity / 2: # Check if not falling and SMALLER than (-200.0), JUMP_VELOCITY - Certain time window to release spacebar for short jump
 			velocity.y = movement_data.jump_velocity / 2 # Short press on spacebar causes a smaller jump
 		
-		if Input.is_action_just_pressed("ui_accept") and air_jump == true and not just_wall_jumped: # In the air and has an air_jump available and hasn't wall jumped recently 
+		if Input.is_action_just_pressed("jump") and air_jump == true and not just_wall_jumped: # In the air and has an air_jump available and hasn't wall jumped recently 
 			velocity.y = movement_data.jump_velocity * 0.8 # Make the air jump less powerful than the regular jump
 			air_jump = false
 
