@@ -1,11 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://bmpkxgt5nna0a"]
+[gd_scene load_steps=6 format=3 uid="uid://bmpkxgt5nna0a"]
 
 [ext_resource type="PackedScene" uid="uid://d25kocpsd82yy" path="res://world.tscn" id="1_d6dbc"]
+[ext_resource type="PackedScene" uid="uid://boik6vklipqi8" path="res://level_two.tscn" id="2_furq5"]
 [ext_resource type="PackedScene" uid="uid://c2yr0ca2airn2" path="res://spikes.tscn" id="2_lq2he"]
 [ext_resource type="PackedScene" uid="uid://bebbe2l5i84ep" path="res://heart.tscn" id="3_0h01o"]
 [ext_resource type="PackedScene" uid="uid://c2tl7lnnfl1c5" path="res://level_tile_map.tscn" id="4_1acdp"]
 
 [node name="LevelOne" instance=ExtResource("1_d6dbc")]
+next_level = ExtResource("2_furq5")
 
 [node name="Player" parent="." index="0"]
 position = Vector2(32, 136)
