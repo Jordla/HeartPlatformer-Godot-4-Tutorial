@@ -11,14 +11,14 @@ extends Node2D
 
 func _ready(): 
 	# level_completed.hide()
-	RenderingServer.set_default_clear_color(Color.BLACK)
 	# polygon_2d.polygon = collision_polygon_2d.polygon # Set the empty list of polygons to be the list of polygon from the collison node
 	Events.level_completed.connect(show_level_completed) # Don't put show_level_completed() as we don't want to call the func only connect it
 	
 func show_level_completed():
 	level_completed.show()
-	if not next_level is PackedScene: return # Exit clause, What is not next_level? (!PackedScene)?, Exits if PackedScene returns null
 	get_tree().paused = true # Upon level completion pause the game
+	await get_tree().create_timer(1, 0).timeout # Wait for 1 second timer to be created and then timeout before executing next line of code
+	if not next_level is PackedScene: return # Exit clause, What is not next_level? (!PackedScene)?, Exits if PackedScene returns null
 	await LevelTransition.fade_to_black() # await here is waiting for function to finish, await in the function is waiting for animation to finish
 	get_tree().paused = false	# Unpause
 	get_tree().change_scene_to_packed(next_level) # How does it know what the next PackedScene is?

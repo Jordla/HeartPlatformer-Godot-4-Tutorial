@@ -3,6 +3,7 @@ extends CenterContainer
 @onready var quit_button = %QuitButton
 
 func _ready():
+	RenderingServer.set_default_clear_color(Color.BLACK) # Moved from World node to startmenu 
 	start_game_button.grab_focus() # Sets the focus to the StartButton, can now navigate menu using arrow keys
 
 func _on_start_game_button_pressed():
