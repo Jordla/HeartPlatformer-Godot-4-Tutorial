@@ -6,10 +6,12 @@ extends CharacterBody2D
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var air_jump: bool = false
 var just_wall_jumped: bool = false
+var was_wall_normal = Vector2.ZERO
 
 @onready var animated_sprite_2d = $AnimatedSprite2D
 @onready var coyote_jump_timer = $CoyoteJumpTimer
 @onready var starting_position = global_position # Attribute of the 2DNode and only available when the node is ready 
+@onready var wall_jump_timer = $WallJumpTimer
 
 func _physics_process(delta): # Ran everysingle physics frame (60 ticks per second, therefore called 60 times a second) - Delta: Time between each frame 
 	apply_gravity(delta) # Try commenting out gravity function to see what happens
@@ -22,6 +24,9 @@ func _physics_process(delta): # Ran everysingle physics frame (60 ticks per seco
 	apply_air_resistance(input_axis, delta)
 	update_animation(input_axis)
 	var was_on_floor = is_on_floor() # Check if player was on floor before moving 
+	var was_on_wall = is_on_wall_only()
+	if was_on_wall:
+		was_wall_normal = get_wall_normal() # Save the wall normal
 	# print(delta) - checking what delta does
 	move_and_slide()
 	var just_left_ledge = was_on_floor and not is_on_floor() and velocity.y >= 0 # Before moving: on floor?, After moving: in air/! on_floor, Is player in falling state?
@@ -30,6 +35,9 @@ func _physics_process(delta): # Ran everysingle physics frame (60 ticks per seco
 	if Input.is_action_just_pressed("jump"):
 		movement_data = load("res://FasterMovementData.tres") # Switches from SlowerMovementData resource to the FasterMovementData
 	just_wall_jumped = false
+	var just_left_wall = was_on_wall and not is_on_wall()
+	if just_left_wall: 
+		wall_jump_timer.start()
 
 
 func apply_gravity(delta : float):
@@ -38,8 +46,10 @@ func apply_gravity(delta : float):
 		velocity.y += gravity *  movement_data.gravity_scale * delta # Apply fraction of gravity per tick, delta > 1, then velocity.y is increased to catchup on time gap
 
 func handle_wall_jump():
-	if not is_on_wall_only(): return # New function in Godot 4
+	if not is_on_wall_only() and wall_jump_timer.time_left <= 0: return # Prevent corner walljumps
 	var wall_normal = get_wall_normal() # Detects if collided with wall and returns a normal (orthogonal vector pointing away from wall) - vector2D
+	if wall_jump_timer.time_left > 0.0: # If grace period active
+		wall_normal = was_wall_normal # Set wall normal prev wall normal
 	if Input.is_action_just_pressed("jump"):
 		velocity.x = wall_normal.x * movement_data.speed # Horizontal velocity is need to "push" off the wall in the opposite direction
 		velocity.y = movement_data.jump_velocity # A jump
