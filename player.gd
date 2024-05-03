@@ -94,3 +94,5 @@ func update_animation(input_axis : float):
 func _on_hazard_detector_area_entered(area):
 	global_position = starting_position # Also enabled position smoothing in the Camera2D node - Makes the game blurry though
 	# queue_free() # Destroys/deletes node that script is attached to and all subsequent children 
+
+# e
