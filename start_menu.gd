@@ -1,4 +1,9 @@
 extends CenterContainer
+@onready var start_game_button = %StartGameButton
+@onready var quit_button = %QuitButton
+
+func _ready():
+	start_game_button.grab_focus() # Sets the focus to the StartButton, can now navigate menu using arrow keys
 
 func _on_start_game_button_pressed():
 	await LevelTransition.fade_to_black()
