@@ -37,6 +37,7 @@ func _physics_process(delta): # Ran everysingle physics frame (60 ticks per seco
 	var just_left_wall = was_on_wall and not is_on_wall()
 	if just_left_wall: 
 		wall_jump_timer.start()
+	update_animation(input_axis)
 
 
 func apply_gravity(delta : float):
