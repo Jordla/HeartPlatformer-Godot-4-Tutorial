@@ -18,10 +18,13 @@ var start_level_msec : float = 0.0
 
 
 func _ready(): 
+	if not next_level is PackedScene: # Checks if there is a next_level, next_level is null
+		level_completed.next_level_button.text = "Victory Screen"
+		next_level = load("res://victory_screen.tscn")
 	Events.level_completed.connect(show_level_completed) # Don't put show_level_completed() as we don't want to call the func only connect it
 	get_tree().paused = true
 	start_in.visible = true  # Reset start in true
-	await LevelTransition.fade_from_black()
+	LevelTransition.fade_from_black()
 	animation_player.play("countdown")
 	await animation_player.animation_finished
 	get_tree().paused = false
