@@ -1,10 +1,9 @@
 extends ColorRect
 
+signal retry()
+signal next_level()
+
 @onready var retry_button = %RetryButton
-
-signal retry
-signal next_level
-
 
 func _on_retry_button_pressed():
 	retry.emit()

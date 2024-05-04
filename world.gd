@@ -20,7 +20,7 @@ var start_level_msec : float = 0.0
 func _ready(): 
 	Events.level_completed.connect(show_level_completed) # Don't put show_level_completed() as we don't want to call the func only connect it
 	get_tree().paused = true
-	# start_in.visible = true - Commented this code out because it's already visible by default
+	start_in.visible = true  # Reset start in true
 	await LevelTransition.fade_from_black()
 	animation_player.play("countdown")
 	await animation_player.animation_finished
@@ -39,14 +39,18 @@ func go_to_next_level():
 	get_tree().paused = false	# Unpause
 	get_tree().change_scene_to_packed(next_level) # How does it know what the next PackedScene is?
 	
+func retry(): # Works similar to go_to_next_level() but we just want to reload the current level
+	await LevelTransition.fade_to_black()
+	get_tree().paused = false
+	get_tree().change_scene_to_file(scene_file_path)
+	
 func show_level_completed():
 	level_completed.show()
 	level_completed.retry_button.grab_focus()
 	get_tree().paused = true # Upon level completion pause the game
 
 func _on_level_completed_next_level():
-	pass # Replace with function body.
-
+	go_to_next_level()
 
 func _on_level_completed_retry():
-	go_to_next_level()
+	retry()
