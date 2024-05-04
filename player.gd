@@ -37,7 +37,6 @@ func _physics_process(delta): # Ran everysingle physics frame (60 ticks per seco
 	var just_left_wall = was_on_wall and not is_on_wall()
 	if just_left_wall: 
 		wall_jump_timer.start()
-	update_animation(input_axis)
 
 
 func apply_gravity(delta : float):
@@ -61,7 +60,8 @@ func handle_jump():
 	
 	if is_on_floor() or coyote_jump_timer.time_left > 0.0: # Checks if on floor or coyote jump window is still open, then allow player to jump
 		if Input.is_action_pressed("jump"): # Removing is_on_floor() enables endless jumping/flying
-			velocity.y = movement_data.jump_velocity # Jump veloicty applied imm but 
+			velocity.y = movement_data.jump_velocity # Jump veloicty applied imm
+			coyote_jump_timer.stop() # If jumped or use coyote jump stop the timer for grace period, prevents player from holding down jump and jumping higher than intended (Multiple jumps until grace period is over)
 	elif not is_on_floor(): # In the air 
 		if Input.is_action_just_released("jump") and velocity.y < movement_data.jump_velocity / 2: # Check if not falling and SMALLER than (-200.0), JUMP_VELOCITY - Certain time window to release spacebar for short jump
 			velocity.y = movement_data.jump_velocity / 2 # Short press on spacebar causes a smaller jump
