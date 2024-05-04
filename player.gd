@@ -51,7 +51,7 @@ func handle_wall_jump():
 	if wall_jump_timer.time_left > 0.0: # If grace period active
 		wall_normal = was_wall_normal # Set wall normal prev wall normal
 	if Input.is_action_just_pressed("jump"):
-		velocity.x = wall_normal.x * movement_data.speed # Horizontal velocity is need to "push" off the wall in the opposite direction
+		velocity.x = wall_normal.x * movement_data.speed * 0.8 # Horizontal velocity is need to "push" off the wall in the opposite direction
 		velocity.y = movement_data.jump_velocity # A jump
 		just_wall_jumped = true
 
@@ -60,7 +60,7 @@ func handle_jump():
 	if is_on_floor(): air_jump = true
 	
 	if is_on_floor() or coyote_jump_timer.time_left > 0.0: # Checks if on floor or coyote jump window is still open, then allow player to jump
-		if Input.is_action_just_pressed("jump"): # Removing is_on_floor() enables endless jumping/flying
+		if Input.is_action_pressed("jump"): # Removing is_on_floor() enables endless jumping/flying
 			velocity.y = movement_data.jump_velocity # Jump veloicty applied imm but 
 	elif not is_on_floor(): # In the air 
 		if Input.is_action_just_released("jump") and velocity.y < movement_data.jump_velocity / 2: # Check if not falling and SMALLER than (-200.0), JUMP_VELOCITY - Certain time window to release spacebar for short jump
