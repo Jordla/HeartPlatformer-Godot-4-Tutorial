@@ -10,10 +10,7 @@
 next_level = ExtResource("2_furq5")
 
 [node name="Player" parent="." index="0"]
-position = Vector2(32, 136)
-
-[node name="StartIn" parent="CanvasLayer" index="1"]
-visible = false
+position = Vector2(24, 144)
 
 [node name="Spikes" parent="." index="3" instance=ExtResource("2_lq2he")]
 position = Vector2(296, 128)
@@ -43,7 +40,7 @@ position = Vector2(320, -8)
 position = Vector2(104, 136)
 
 [node name="Heart7" parent="." index="12" instance=ExtResource("3_0h01o")]
-position = Vector2(32, 56)
+position = Vector2(24, 56)
 
 [node name="Heart8" parent="." index="13" instance=ExtResource("3_0h01o")]
 position = Vector2(216, 40)

@@ -22,7 +22,6 @@ func _physics_process(delta): # Ran everysingle physics frame (60 ticks per seco
 	apply_friction(input_axis, delta)
 	handle_air_acceleration(input_axis, delta)
 	apply_air_resistance(input_axis, delta)
-	update_animation(input_axis)
 	var was_on_floor = is_on_floor() # Check if player was on floor before moving 
 	var was_on_wall = is_on_wall_only()
 	if was_on_wall:
@@ -38,6 +37,7 @@ func _physics_process(delta): # Ran everysingle physics frame (60 ticks per seco
 	var just_left_wall = was_on_wall and not is_on_wall()
 	if just_left_wall: 
 		wall_jump_timer.start()
+	update_animation(input_axis)
 
 
 func apply_gravity(delta : float):

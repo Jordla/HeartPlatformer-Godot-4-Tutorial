@@ -11,18 +11,15 @@ extends Node2D
 @onready var start_in_label = %StartInLabel
 @onready var animation_player = $AnimationPlayer
 
-
 func _ready(): 
+	Events.level_completed.connect(show_level_completed) # Don't put show_level_completed() as we don't want to call the func only connect it
 	get_tree().paused = true
-	LevelTransition.fade_from_black()
+	# start_in.visible = true - Commented this code out because it's already visible by default
+	await LevelTransition.fade_from_black()
 	animation_player.play("countdown")
 	await animation_player.animation_finished
 	get_tree().paused = false
-	# level_completed.hide()
-	# polygon_2d.polygon = collision_polygon_2d.polygon # Set the empty list of polygons to be the list of polygon from the collison node
-	Events.level_completed.connect(show_level_completed) # Don't put show_level_completed() as we don't want to call the func only connect it
-	
-	
+	start_in.visible = false
 	
 func show_level_completed():
 	level_completed.show()
